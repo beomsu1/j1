@@ -49,6 +49,7 @@ public class SampleRepositoryTest {
 
         String keyCol = "u10";
 
+        // Optional : 검색 결과가 있을 경우 값을 갖고, 없을 경우 비워둬라.
         Optional<Sample> result = sampleRepository.findById(keyCol);
 
         // 만약에 얘가 없으면 예외를 만들어서 던져버리겠다.
