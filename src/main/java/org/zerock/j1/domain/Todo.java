@@ -27,5 +27,10 @@ public class Todo {
 
     @Column(length = 300, nullable = false) // 300자 제한 , not null
     private String title;
+
+    // 수정이 가능하게 메소드를 하나 생성
+    public void changeTitle(String title){
+        this.title = title;
+    }
     
 }
