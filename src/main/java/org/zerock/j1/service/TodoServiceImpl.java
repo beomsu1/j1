@@ -50,6 +50,7 @@ public class TodoServiceImpl implements TodoService{
     public TodoDTO register(TodoDTO dto) {
 
         // dto 를 Todo로 변환해서 그 값을 entity에 저장
+        // domain Todo -> entity
         Todo entity = modelMapper.map(dto, Todo.class);
         
         // 번호가 들어있는 Todo
