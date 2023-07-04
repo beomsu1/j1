@@ -1,6 +1,7 @@
 package org.zerock.j1.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -50,6 +51,7 @@ public class TodoServiceImpl implements TodoService{
     public TodoDTO register(TodoDTO dto) {
 
         // dto 를 Todo로 변환해서 그 값을 entity에 저장
+        // domain Todo -> entity
         Todo entity = modelMapper.map(dto, Todo.class);
         
         // 번호가 들어있는 Todo
@@ -58,6 +60,45 @@ public class TodoServiceImpl implements TodoService{
         
         // result 값을 TodoDTO로 변환을 해서 화면에 출력 대기
         return modelMapper.map(result,TodoDTO.class);
+
+    }
+
+
+    // 조회
+    @Override
+    public TodoDTO getOne(Long tno) {
+
+        Optional<Todo> result = todoRepository.findById(tno);
+        
+        // 예외를 던져주는 방식
+        Todo todo = result.orElseThrow();
+
+        // todo -> TodoDTO로 변환 후 TodoDTO 타입의 dto에 저장한다!
+        TodoDTO dto = modelMapper.map(todo, TodoDTO.class);
+
+        return dto;
+    }
+
+    // 삭제
+    @Override
+    public void remove(Long tno) {
+
+        todoRepository.deleteById(tno);
+    }
+
+    // 수정이
+    @Override
+    public void update(TodoDTO dto) {
+
+        // findById를 해서 조회를 하고 수정을 하고 저장하자!
+
+        Optional<Todo> result = todoRepository.findById(dto.getTno());
+
+        Todo todo = result.orElseThrow();
+
+        todo.changeTitle(dto.getTitle());
+
+        todoRepository.save(todo);
 
     }
     

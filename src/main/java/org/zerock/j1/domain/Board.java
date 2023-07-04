@@ -12,25 +12,29 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Entity // 모든 Entity는 id를 가진다
-@Table(name="tbl_todo2")
+@Entity
+@Table(name ="t_board")
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
 @ToString
-@Getter // entity는 가능하면 getter를 사용 DB에서 데이터가 나오기 때문에
-public class Todo {
+public class Board extends BaseEntity{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // autoIncrement로 사용할 거라는 코드
-    private Long tno;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // autoIncrement
+    private Long bno;
 
-    @Column(length = 300, nullable = false) // 300자 제한 , not null
+    @Column(length = 200 , nullable = false)
     private String title;
 
-    // 수정이 가능하게 메소드를 하나 생성
+    @Column(length = 1000 , nullable = false)
+    private String content;
+
+    @Column(length = 50 , nullable = false)
+    private String writer;
+
     public void changeTitle(String title){
-        this.title = title;
+        this.title=title;
     }
-    
 }

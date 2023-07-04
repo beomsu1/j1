@@ -25,4 +25,8 @@ public class Sample {
     
     private String last;
 
+    private String zipcode;
+
+    private String city;
+
 }
