@@ -42,7 +42,11 @@ public interface BoardRepository extends JpaRepository<Board,Long>, BoardSearch{
     @Query(value = "select * from t_board", nativeQuery = true)
     List<Object[]> listNative();
 
-
+    // 이 코드는 정적이라 내용을 바꿀 수 없음 (그래서 사용 X ) -> Querydsl을 사용해야함
+    // 댓글 갯수 리스트?
+    //b.bno, b.title, b.writer 3개가 Object의 배열로
+    @Query("select b.bno, b.title, b.writer , count(r) from Board b left outer join Reply r on r.board = b group by b order by b.bno desc")
+    List<Object[]> getListWithRcnt();
 
 
 
