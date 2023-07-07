@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.zerock.j1.domain.Board;
 import org.zerock.j1.domain.Reply;
+import org.zerock.j1.dto.ReplyPageRequestDTO;
+import org.zerock.j1.service.ReplyService;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -19,6 +21,9 @@ public class ReplyRepositoryTest {
     // 의존성 주입
     @Autowired
     private ReplyRepository replyRepository;
+
+    @Autowired
+    private ReplyService replyService;
 
     
     // // board를 만들 때 board객체를 조회하는 게 아니고 id만 있으면 생성 가능하다!
@@ -48,7 +53,7 @@ public class ReplyRepositoryTest {
 
     //         Board board = Board.builder().bno(bno).build();
 
-    //         for(int i = 0; i< 5; i++){
+    //         for(int i = 0; i< 50; i++){
                 
     //             Reply reply = Reply.builder()
     //             .replyText("Reply"+bno+"--"+i)
@@ -80,4 +85,31 @@ public class ReplyRepositoryTest {
         // ToSTring 할 떄 board를 안 가져오게 설정 하면 됨! -> domian reply에서 설정해주기
         result.get().forEach(r -> log.info(r));
     }
+
+    
+    @Test
+    public void testCount(){
+        
+        Long bno = 99L;
+
+        long count = replyRepository.getCountBoard(bno);
+
+        log.info("count: " + count);
+
+    }
+
+
+    @Test
+    public void testListLast() {
+
+        ReplyPageRequestDTO requestDTO = ReplyPageRequestDTO.builder()
+        .bno(99L)
+        .last(true)
+        .build();
+
+        log.info(replyService.list(requestDTO));
+
+    }
+
+
 }
