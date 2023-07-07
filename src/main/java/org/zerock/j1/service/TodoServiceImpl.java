@@ -40,10 +40,11 @@ public class TodoServiceImpl implements TodoService{
         .map(todo -> modelMapper.map(todo, TodoDTO.class)).collect(Collectors.toList());
 
         // PageResponseDTO 객체를 생성하여 rseponse 변수에 할당
-        PageResponseDTO<TodoDTO> response = new PageResponseDTO<>();
+        // PageResponseDTO<TodoDTO> response = new PageResponseDTO<>();
 
-        response.setDtoList(dtoList);
-        return response;
+        // response.setDtoList(dtoList);
+        // return response;
+        return null;
 
     }
 
