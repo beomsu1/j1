@@ -7,13 +7,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.zerock.j1.domain.Board;
+import org.zerock.j1.dto.BoardReadDTO;
 import org.zerock.j1.repository.search.BoardSearch;
 
 import java.util.List;
 
 
 public interface BoardRepository extends JpaRepository<Board,Long>, BoardSearch{
-    
+
     List<Board> findByTitleContaining(String title);
 
     // JPQL - 어노테이션을 사용해서 title을 찾는 코드
@@ -49,5 +50,9 @@ public interface BoardRepository extends JpaRepository<Board,Long>, BoardSearch{
     List<Object[]> getListWithRcnt();
 
 
+    //조회
+    // modelMapper를 사용해서 DTO로 변환을 따로 안 해도 됨. -> DTO타입으로 반환받기떄문
+    @Query("select b from Board b where b.bno = :bno")
+    BoardReadDTO readOne(@Param("bno") Long bno);
 
 }
