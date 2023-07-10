@@ -37,4 +37,12 @@ public class Reply {
     @ManyToOne(fetch = FetchType.LAZY)
     // 하나의 댓글은 하나의 게시글의 포함된다 라는 논리에 대한 코드
     private Board board;
+
+    public void changeText(String text){
+        this.replyText = text;
+    }
+
+    public void changeFile(String fileName){
+        this.replyFile = fileName;
+    }
 }

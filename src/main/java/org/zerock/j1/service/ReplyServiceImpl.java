@@ -1,6 +1,7 @@
 package org.zerock.j1.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -15,6 +16,7 @@ import org.zerock.j1.dto.ReplyDTO;
 import org.zerock.j1.dto.ReplyPageRequestDTO;
 import org.zerock.j1.repository.ReplyRepository;
 
+import ch.qos.logback.core.model.Model;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -40,6 +42,7 @@ public class ReplyServiceImpl implements ReplyService{
             // 진짜 페이지 넘버
             pageNum = (int)(Math.ceil(totalCount/(double)requestDTO.getSize()));
 
+            pageNum = pageNum <= 0 ? 1 : pageNum;
         }
 
         Pageable pageable = PageRequest.of(pageNum-1, requestDTO.getSize() , Sort.by("rno").ascending());
@@ -57,6 +60,63 @@ public class ReplyServiceImpl implements ReplyService{
         PageResponseDTO<ReplyDTO> responseDTO = new PageResponseDTO<>(dtoList, totalReplyCount, requestDTO);
         responseDTO.setPage(pageNum);
         return responseDTO;
+    }
+
+    @Override
+    public Long register(ReplyDTO replyDTO) {
+
+        Reply reply = modelMapper.map(replyDTO, Reply.class);
+
+        log.info("reply...");
+        log.info(reply);
+
+        Long newRno = replyRepository.save(reply).getRno();
+
+        return newRno;
+    }
+
+    // 댓글 조회
+    @Override
+    public ReplyDTO read(Long rno) {
+
+        Optional<Reply> result = replyRepository.findById(rno);
+
+        Reply reply = result.orElseThrow();
+
+        return modelMapper.map(reply, ReplyDTO.class);
+    }
+
+    @Override
+    public void remove(Long rno) {
+
+        // 조회
+        Optional<Reply> result = replyRepository.findById(rno);
+
+        Reply reply =result.orElseThrow();
+
+        reply.changeText("해당 글은 삭제되었습니다.");
+        reply.changeFile(null); 
+
+        replyRepository.save(reply);
+
+
+    }
+
+
+    // 수정
+    @Override
+    public void modify(ReplyDTO replyDTO) {
+
+        // 조회
+        Optional<Reply> result = replyRepository.findById(replyDTO.getRno());
+
+        Reply reply =result.orElseThrow();
+
+        reply.changeText(replyDTO.getReplyText());
+        reply.changeFile(replyDTO.getReplyFile()); 
+
+        replyRepository.save(reply);
+
     }
     
 }
